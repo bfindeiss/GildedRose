@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GildedRose {
 
-	private static List<Item> items = null;
+	private static List<Item> items = new ArrayList<Item>();
 
 	/**
 	 * @param args
@@ -102,4 +102,32 @@ public class GildedRose {
         }
     }
 
+    public static List<Item> getItems() {
+        return items;
+    }
+
+    public static void addItemToShop(Item item) {
+        if (checkItem(item)){
+            GildedRose.items.add(item);
+        }
+    }
+
+    private static boolean checkItem(Item item) {
+        if (item.quality < 0) {
+            throw new IllegalArgumentException("Quality of the item must be at least 0!");
+        }
+        
+        if(item.quality > 50 && !item.name.equals("Sulfuras, Hand of Ragnaros")) {
+            throw new IllegalArgumentException("Quality of the item must be at most 50!");
+        }
+
+        if(item.quality != 80 && item.name.equals("Sulfuras, Hand of Ragnaros")){
+            throw new IllegalArgumentException("Quality of Sulfuras item must equal 80!");
+        }
+        
+        return true;
+    }
+
+    
+    
 }
