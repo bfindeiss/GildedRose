@@ -26,4 +26,5 @@
             </plugin>
         </plugins>
     </reporting>
+    <name>GildedRoseIF</name>
 </project>
