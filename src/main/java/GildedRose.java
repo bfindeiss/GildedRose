@@ -31,26 +31,26 @@ public class GildedRose {
     public static void updateQuality() {
         for (Item item : items) {
             final String name = item.getName();
-            final int quality = item.getQuality();
+            int quality = item.getQuality();
 
             if ((!AGED_BRIE.equals(name)) && !BACKSTAGE_PASSES_TO_A_TAFKAL80ETC_CONCERT.equals(name)) {
                 if (quality > 0 && !SULFURAS_HAND_OF_RAGNAROS.equals(name)) {
-                    item.setQuality(quality - 1);
+                    quality--;
                 }
             } else {
                 if (quality < 50) {
-                    item.setQuality(quality + 1);
+                    quality++;
 
                     if (BACKSTAGE_PASSES_TO_A_TAFKAL80ETC_CONCERT.equals(name)) {
                         if (item.getSellIn() < 11) {
                             if (quality < 50) {
-                                item.setQuality(quality + 1);
+                                quality++;
                             }
                         }
 
                         if (item.getSellIn() < 6) {
                             if (quality < 50) {
-                                item.setQuality(quality + 1);
+                                quality++;
                             }
                         }
                     }
@@ -66,18 +66,20 @@ public class GildedRose {
                     if (!BACKSTAGE_PASSES_TO_A_TAFKAL80ETC_CONCERT.equals(name)) {
                         if (quality > 0) {
                             if (!SULFURAS_HAND_OF_RAGNAROS.equals(name)) {
-                                item.setQuality(quality - 1);
+                                quality--;
                             }
                         }
                     } else {
+                    	//TODO: test required
                         item.setQuality(quality - quality);
                     }
                 } else {
                     if (quality < 50) {
-                        item.setQuality(quality + 1);
+                        quality++;
                     }
                 }
             }
+            item.setQuality(quality);
         }
     }
 
