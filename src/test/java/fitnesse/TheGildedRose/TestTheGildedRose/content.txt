@@ -1,0 +1,130 @@
+!contents -R2 -g -p -f -h
+!path fitnesse-standalone.jar
+!path fitlibrary-2.0.jar
+!path lib/*.jar
+!define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
+!path /Users/bfindeiss/Documents/workspace/GildedRoseJava/target/test-classes
+!path /Users/bfindeiss/Documents/workspace/GildedRoseJava/target/classes
+|de.bfindeiss.GildedRoseFixture|
+
+Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison. 
+We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. 
+We have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures. 
+Your task is to add the new feature to our system so that we can begin selling a new category of items. 
+First an introduction to our system:
+
+All items have a SellIn value which denotes the number of days we have to sell the item
+
+|Items in the Gilded Rose   |
+|name     |sellIn|getSellIn?|
+|Some Item|20    |20        |
+
+All items have a Quality value which denotes how valuable the item is
+
+|Items in the Gilded Rose     |
+|name     |quality|getQuality?|
+|Some Item|20     |20         |
+
+
+At the end of each day our system lowers both values for every item
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Some Item|25     |42    |true          |24                 |41                |
+
+
+Once the sell by date has passed, Quality degrades twice as fast
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Some Item|25     |1     |true          |24                 |0                 |
+|Some Item|25     |-1    |true          |23                 |-2                |
+
+
+The Quality of an item is never negative
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Some Item|0      |42    |true          |0                  |41                |
+
+
+“Aged Brie” actually increases in Quality the older it gets
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Aged Brie|10     |22    |true          |11                 |21                |
+
+
+The Quality of an item is never more than 50
+
+-> When adding a new item with quality >50, quality shall be set back to 50
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Some Item|80     |42    |true          |50                 |41                |
+
+-> When an item with increasing quality (like "Aged Brie") reaches a quality of 50,
+   there shall be no further increase
+
+|Items in the Gilded Rose                                                      |
+|name     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Aged Brie|50     |22    |true          |50                 |21                |
+
+
+“Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
+
+|Items in the Gilded Rose                                                                       |
+|name                      |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Sulfuras, Hand of Ragnaros|80     |0     |true          |80                 |0                 |
+
+
+“Backstage passes”, like aged brie, increases in Quality as it’s SellIn value approaches; 
+
+-> Quality increases by 1 if there are more than 10 days left
+
+|Items in the Gilded Rose                                                                                      |
+|name                                     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Backstage passes to a TAFKAL80ETC concert|20     |22    |true          |21                 |21                |
+
+-> Quality increases by 2 if there are between 6 and 10 days left
+
+|Items in the Gilded Rose                                                                                      |
+|name                                     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Backstage passes to a TAFKAL80ETC concert|20     |9     |true          |22                 |8                 |
+
+
+-> Quality increases by 3 if there are 5 days or less left
+
+|Items in the Gilded Rose                                                                                      |
+|name                                     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Backstage passes to a TAFKAL80ETC concert|20     |5     |true          |23                 |4                 |
+
+
+-> Quality drops to 0 after the concert
+
+|Items in the Gilded Rose                                                                                      |
+|name                                     |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Backstage passes to a TAFKAL80ETC concert|20     |0     |true          |0                  |-1                |
+
+
+We have recently signed a supplier of conjured items. This requires an update to our system:
+
+“Conjured” items degrade in Quality twice as fast as normal items
+
+-> When the sell date is >0, quality decreases by 2 per day
+
+|Items in the Gilded Rose                                                          |
+|name         |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Conjured Item|25     |42    |true          |23                 |41                |
+
+
+-> When the sell date is <0, quality decreases by 4 per day
+
+|Items in the Gilded Rose                                                          |
+|name         |quality|sellIn|updateQuality?|qualityAfterUpdate?|sellInAfterUpdate?|
+|Conjured Item|25     |-1    |true          |22                 |-2                |
+
+
+Feel free to make any changes to the UpdateQuality method and add any new code as long as everything still works correctly. 
+However, do not alter the Item class or Items property as those belong to the goblin in the corner who will insta-rage 
+and one-shot you as he doesn’t believe in shared code ownership (you can make the UpdateQuality method and Items property static if you like, we’ll cover for you).
